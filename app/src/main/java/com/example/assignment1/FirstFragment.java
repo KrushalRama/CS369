@@ -1,9 +1,12 @@
 package com.example.assignment1;
 
+
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +28,7 @@ public class FirstFragment extends Fragment {
     }
 private FragmentFirstBinding binding;
     TextView showCountTextView;
+    ImageButton imageButton;
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -45,10 +49,10 @@ private FragmentFirstBinding binding;
         view.findViewById(R.id.random_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
+                int currentCount = Integer.parseInt(showCountTextView.getText().toString());
+                FirstFragmentDirections.ActionFirstFragmentToSecondFragment action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(currentCount);
+                NavHostFragment.findNavController(FirstFragment.this).navigate(action);
             }
-
         });
         view.findViewById(R.id.toast_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,18 +61,31 @@ private FragmentFirstBinding binding;
                 myToast.show();
             }
         });
+        view.findViewById(R.id.imageButton).setOnClickListener(new View.OnClickListener (){
+            public void onClick(View view){
+                Toast myToast = Toast.makeText(getActivity(), "You have Clicked Image!", Toast.LENGTH_SHORT);
+                myToast.show();
+            }
+        });
+
         view.findViewById(R.id.count_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 countMe(view);
             }
         });
+
     }
 
-@Override
+
+
+
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
+
 
 }

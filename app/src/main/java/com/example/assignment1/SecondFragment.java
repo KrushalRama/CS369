@@ -1,14 +1,19 @@
 package com.example.assignment1;
-
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import com.example.assignment1.databinding.FragmentSecondBinding;
+
+
+import java.util.Random;
 
 public class SecondFragment extends Fragment {
 
@@ -23,11 +28,33 @@ private FragmentSecondBinding binding;
       binding = FragmentSecondBinding.inflate(inflater, container, false);
       return binding.getRoot();
 
+
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ConstraintLayout constraintLayout = view.getRootView().findViewById(R.id.SecondFragment);
+
+
+
+        AnimationDrawable animationDrawable= (AnimationDrawable) constraintLayout.getBackground();
+        animationDrawable.setEnterFadeDuration(2500);
+        animationDrawable.setExitFadeDuration(5000);
+        animationDrawable.start();
+
+        Integer count = SecondFragmentArgs.fromBundle(getArguments()).getMyArg();
+        String countText = getString(R.string.random_heading, count);
+        TextView headerView = view.getRootView().findViewById(R.id.textview_header);
+        headerView.setText(countText);
+
+        Random random = new java.util.Random();
+        Integer randomNumber = 0;
+        if (count > 0) {
+            randomNumber = random.nextInt(count + 1);
+        }
+        TextView randomView = view.getRootView().findViewById(R.id.textview_random);
+        randomView.setText(randomNumber.toString());
         binding.buttonSecond.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -35,6 +62,7 @@ private FragmentSecondBinding binding;
                         .navigate(R.id.action_SecondFragment_to_FirstFragment);
             }
         });
+
     }
 
 @Override
@@ -42,5 +70,6 @@ private FragmentSecondBinding binding;
         super.onDestroyView();
         binding = null;
     }
+
 
 }
